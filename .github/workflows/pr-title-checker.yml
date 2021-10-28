@@ -1,0 +1,15 @@
+name: PR Title Checker
+
+on:
+  workflow_call:
+
+jobs:
+  pr-title-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checks pull request title
+      - name: Check pull request title
+        uses: naveenk1223/action-pr-title@master
+        with:
+          regex: '\[HTCH\-([0-9])+\] \- ([a-zA-Z0-9\- ])+' # Regex the title should match
