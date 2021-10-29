@@ -1,0 +1,48 @@
+name: Main CI Workflow
+
+on:
+  workflow_call:
+
+jobs:
+  branch-name-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checks branch name
+      - name: Check branch name
+        uses: deepakputhraya/action-branch-name@master
+        with:
+          regex: '([a-z])+\/HTCH\-([0-9])+([a-zA-Z0-9\-])*' # Regex the branch should match
+          allowed_prefixes: feature,bugfix,release # All branches should start with the given prefix
+          ignore: main,develop # Ignore exactly matching branch names from convention
+
+  code-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Check out git repository
+        uses: actions/checkout@v2
+
+      # Installs Node using the runners shell
+      - name: Install Node
+        uses: actions/setup-node@v2.1.4
+        with:
+          node-version: 15.x
+
+      # Installs npm using the runners shell
+      - name: Install npm
+        run: npm install
+
+      # Runs linter using the runners shell
+      - name: Run Lint
+        run: npm run lint
+
+      # Runs prettier using the runners shell
+      - name: Run Prettier
+        run: npm run prettier
+
+# TODO: Uncomment after adding first tests
+#      # Runs tests using the runners shell
+#      - name: Run tests
+#        run: npm test
