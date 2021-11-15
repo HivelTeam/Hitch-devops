@@ -16,7 +16,7 @@ def call(ApplicationName, EnvironmentChoices, BuildWithParameter, BuildFolder, D
         options {
             disableConcurrentBuilds()
             buildDiscarder logRotator(numToKeepStr: '5')
-            timeout(time: 20, unit: 'MINUTES')
+            timeout(time: 15, unit: 'MINUTES')
             timestamps()
         }
 
@@ -30,7 +30,7 @@ def call(ApplicationName, EnvironmentChoices, BuildWithParameter, BuildFolder, D
             stage('Notify') {
                 steps {
                     wrap([$class: 'BuildUser']) {
-                        slackSend message: "User ${env.BUILD_USER_ID} started build:\n" +
+                        slackSend message: "User ${env.BUILD_USER_ID} started build\n" +
                                            "Application: ${ApplicationName}\n" +
                                            "Environment: ${params.ENVIRONMENT}\n" +
                                            "Branch: ${env.BRANCH_NAME}",
@@ -91,15 +91,21 @@ def call(ApplicationName, EnvironmentChoices, BuildWithParameter, BuildFolder, D
                 sh "rm -f ${ARTIFACT_NAME}"
 
                 script {
-                    if (currentBuild.currentResult =='SUCCESS') JobStatus = 'good' else JobStatus = 'danger'
+                    if (currentBuild.currentResult =='SUCCESS') {
+                        JobStatusColor = 'good'
+                        JobStatusIcon = ':ok_hand:'
+                    } else {
+                        JobStatusColor = 'danger'
+                        JobStatusIcon = ':rage:'
+                    }
                 }
 
-                slackSend message: "Status: ${currentBuild.currentResult}\n" +
+                slackSend message: "Status: ${currentBuild.currentResult} ${JobStatusIcon}\n" +
                                    "Application: ${ApplicationName}\n" +
                                    "Environment: ${params.ENVIRONMENT}\n" +
                                    "Branch: ${env.BRANCH_NAME}\n" +
                                    "More info at ${env.BUILD_URL}",
-                          color: JobStatus
+                          color: JobStatusColor
             }
         }
     }
