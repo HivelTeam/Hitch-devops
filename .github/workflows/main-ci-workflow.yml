@@ -12,7 +12,7 @@ jobs:
       - name: Check branch name
         uses: deepakputhraya/action-branch-name@master
         with:
-          regex: '([a-z])+\/HTCH\-([0-9])+([a-zA-Z0-9\-])*' # Regex the branch should match
+          regex: '([a-z])+\/HTCH\-([0-9])+.*' # Regex the branch should match
           allowed_prefixes: feature,bugfix,release # All branches should start with the given prefix
           ignore: main,develop # Ignore exactly matching branch names from convention
 

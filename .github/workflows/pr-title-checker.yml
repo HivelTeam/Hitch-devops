@@ -12,4 +12,4 @@ jobs:
       - name: Check pull request title
         uses: naveenk1223/action-pr-title@master
         with:
-          regex: '\[HTCH\-([0-9])+\] \- ([a-zA-Z0-9\- ])+' # Regex the title should match
+          regex: '\[HTCH\-([0-9])+\] \- .*' # Regex the title should match
