@@ -106,6 +106,8 @@ def call(ApplicationName, EnvironmentChoices, BuildWithParameter, BuildFolder, D
                                    "Branch: ${env.BRANCH_NAME}\n" +
                                    "More info at ${env.BUILD_URL}",
                           color: JobStatusColor
+
+                cleanWs()
             }
         }
     }
